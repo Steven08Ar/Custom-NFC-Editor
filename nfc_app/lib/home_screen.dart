@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_app/screens/modify_nfc_screen.dart';
+import 'package:nfc_app/services/nfc_reader.dart';
+import 'package:nfc_app/services/nfc_authenticator.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -18,10 +20,7 @@ class HomeScreen extends StatelessWidget {
               "Modificar tarjetas NFC",
               Icons.nfc,
               () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ModifyNfcScreen()), // 🔹 Ahora abre la pantalla correcta
-                );
+                // Navega a la pantalla para modificar tarjetas NFC
               },
             ),
             _buildMenuButton(
@@ -29,7 +28,7 @@ class HomeScreen extends StatelessWidget {
               "Identificar Tarjetas de Débito/Crédito",
               Icons.credit_card,
               () {
-                // Aquí navegas a la pantalla de identificación de tarjetas
+                // Navega a la pantalla de identificación de tarjetas
               },
             ),
             _buildMenuButton(
@@ -40,9 +39,16 @@ class HomeScreen extends StatelessWidget {
             ),
             _buildMenuButton(
               context,
-              "Convertir Celular en Tarjeta NFC (Futuro)",
-              Icons.qr_code_2,
-              null, // Deshabilitado por ahora
+              "Convertir Celular en Tarjeta NFC",
+              Icons.lock_open, // Icono de desbloqueo
+              () async {
+                await NFCReader.startNFCReading((encryptionKey) async {
+                  await NFCAuthenticator.authenticateAndUnlock(encryptionKey);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Cerradura desbloqueada")),
+                  );
+                });
+              },
             ),
           ],
         ),

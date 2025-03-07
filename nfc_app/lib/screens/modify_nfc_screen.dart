@@ -7,6 +7,7 @@ import 'clear_nfc_screen.dart';
 import 'write_wifi_screen.dart';
 import 'lock_nfc_screen.dart';
 import 'write_app_screen.dart';
+import 'write_action_screen.dart';
 
 class ModifyNfcScreen extends StatelessWidget {
   @override
@@ -107,9 +108,17 @@ class ModifyNfcScreen extends StatelessWidget {
               );
             },
           ),
-          _buildMenuButton(context, "Ejecutar acciones automáticas", Icons.flash_on, () {
-            // Implementar funciones domóticas con NFC
-          }),
+          _buildMenuButton(
+            context,
+            "Ejecutar acciones automáticas",
+            Icons.flash_on,
+            () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => WriteActionScreen()),
+              );
+            },
+          ),
         ],
       ),
     );
